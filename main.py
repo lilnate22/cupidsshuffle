@@ -4,6 +4,7 @@
 #Github: lilnate22/cupidsshuffle
 import pygame, sys,random, time
 from pygame.locals import *
+from Cupid import *
 
 
 #basic pygame stuff

@@ -11,6 +11,7 @@ from Cupid import *
 
 
 def main():
+	print 'hello world'
 	pass;
 	
 	

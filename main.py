@@ -6,6 +6,7 @@ import pygame
 import player
 import food
 import girl
+import enemy
 import os
 
 class Game_Window(object):
@@ -17,8 +18,9 @@ class Game_Window(object):
                 self.player = player.Player(700,700)
                 self.Food = food.Food()
                 self.Girl = girl.girl()
-                
+                self.Enemy = enemy.enemy()                
                 self.font = pygame.font.SysFont('freesansbold.ttf',40)
+                pygame.display.set_caption('Cupid Shuffle')
 
         def game_over(self):
                 running = True
@@ -33,7 +35,7 @@ class Game_Window(object):
                         self.screen.fill((255,255,255))
                         text = self.font.render('GAME OVER ',True,(255,0,0))
                         self.screen.blit(text,(200-text.get_width()/2,200-text.get_height()))
-                        t2 = 'Points for Hearts Broken: ' + str(self.player.point)
+                        t2 = 'Hearts Broken: ' + str(self.player.point)
                         text2 = self.font.render(t2,True,(255,0,0))
                         self.screen.blit(text2,(200-text2.get_width()/2,200+text2.get_height()))
                         
@@ -43,7 +45,7 @@ class Game_Window(object):
                 self.player.restart()
                 self.Food.restart()
                 self.Girl.restart()
-                
+                self.Enemy.restart()
 
         def run(self):
                 #the music to play during gameplay
@@ -59,12 +61,13 @@ class Game_Window(object):
                         self.player.update(dt,self.screen)
                         self.Food.spawn(dt,self.screen,self.player)
                         self.Girl.spawn(dt,self.screen,self.player)
-                        
+                        self.Enemy.spawn(dt,self.screen,self.player)
 
                         if self.player.is_dead :
+                                pygame.mixer.music.stop()
                                 self.game_over()
 
-                        point = self.font.render(str(self.player.point),True,(0,0,0))
+                        point = self.font.render("Hearts Broken %s " % (str(self.player.point)),True,(250,250,250))
                         self.screen.blit(point,(0,0))
                         pygame.display.update()
 

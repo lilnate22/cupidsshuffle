@@ -2,10 +2,10 @@ import pygame
 import random
 import os
 
-# DIR = os.path.realpath('food.py')    #out-dated
 
-class girl_piece(object):
-	def __init__(self,pos,color = (250,230,221)):
+
+class enemy_piece(object):
+	def __init__(self,pos,color = (0,50,221)):
 		self.m_x = pos[0]
 		self.m_y = pos[1]
 		self.x = self.m_x * 10
@@ -16,9 +16,9 @@ class girl_piece(object):
 		rect = pygame.Rect(self.x,self.y,10,10)
 		pygame.draw.rect(screen,self.color,rect)
 
-class girl(object):
+class enemy(object):
 	def __init__(self):
-		self.girls = list()
+		self.enemys = list()
 
 		self.time = 10000
 		self.time_tick = 10000
@@ -33,25 +33,25 @@ class girl(object):
 					running = True
 			if x == boy.x and y == boy.y :
 				running = True
-			for p in self.girls :
+			for p in self.enemys :
 				if p.m_x == x and p.m_y == y :
 					running = True
 		return x,y
 
 	def restart(self):
-		self.girls = []
+		self.enemys = []
 		self.time = 10000
 
 	def spawn(self,dt,screen,boy):
 		self.time += dt
-		if self.time >= self.time_tick or len(self.girls) <= 0:
+		if self.time >= self.time_tick or len(self.enemys) <= 0:
 			self.time = 0
 			x,y = self.random_pos(boy)
-			f_piece = girl_piece((x,y))
-			self.girls.append(f_piece)
+			f_piece = enemy_piece((x,y))
+			self.enemys.append(f_piece)
 
-		for f_piece in self.girls :
+		for f_piece in self.enemys :
 			if f_piece.m_x == boy.x and f_piece.m_y == boy.y :
-				boy.increase_length(1,1) # we kissed a girl, make her "chase" us
-				self.girls.remove(f_piece)
+				boy.is_dead = True # we have hit an enemy...not sure if they are dads or bfs...w.e the game is over
+				self.enemys.remove(f_piece)
 			f_piece.blit(screen)

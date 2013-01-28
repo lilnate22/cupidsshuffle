@@ -8,8 +8,8 @@ class Food(object):
 	def __init__(self):
 		self.food = list()
 
-		self.time = 3000
-		self.time_tick = 3000
+		self.time = 30000
+		self.time_tick = 30000
 
 	def random_pos(self,boy):
 		running = True 
@@ -29,7 +29,7 @@ class Food(object):
 
 	def restart(self):
 		self.food = []
-		self.time = 3000 #food has a really long time to spawn
+		self.time = 30000 #food has a really long time to spawn
 
 	def spawn(self,dt,screen,boy):
 		self.time += dt

@@ -68,17 +68,20 @@ class Game_Window(object):
                         #we want to spawn enemies and food after X seconds
                         timeDiff =  int(time.time()- self.startTime)
                         
-                        if timeDiff > 10:
-                                self.Enemy.spawn(dt,self.screen,self.player)
+                        if timeDiff > 20:
                                 self.Food.spawn(dt,self.screen,self.player)
 
                         #when the game has progressed far enough, then the enemy despawn will be spread out much more
-                        if(timeDiff) > 30:
+                        if(timeDiff) > 30 and timeDiff < 59:
+                                self.Enemy.spawn(dt,self.screen,self.player)
                                 self.Enemy.despawnTick = 30;
-                        if timeDiff > 60:
+                                
+                        if timeDiff > 60 and timeDiff < 119:
                                 self.Enemy.despawnTick = 45;
-                        if timeDiff > 120:
+                                
+                        if timeDiff > 120 and timeDiff < 240 :
                                 self.Enemy.despawnTick = 60;
+                                
                         if timeDiff > 240:
                                 self.Enemy.despawnTick = 120;
 

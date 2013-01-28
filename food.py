@@ -46,7 +46,7 @@ class Food(object):
 			f_piece.blit(screen)
 
 class Food_piece(object):
-	def __init__(self,pos,color = (255,0,0)):
+	def __init__(self,pos,color = (0,0,255)):
 		self.m_x = pos[0]
 		self.m_y = pos[1]
 		self.x = self.m_x * 10

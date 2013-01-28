@@ -1,38 +1,74 @@
+#Nate Fonseka
 #Cupid Shuffle
-#Author: Nate Fonseka
-#Released under GNU GPL v3
-#Github: lilnate22/cupidsshuffle
-import pygame, sys,random, time
-from pygame.locals import *
-import pygame.gfxdraw
+#Released under Creative Commons 2.0
+
+import pygame
+import player
+import food
+import girl
 import os
 
-WIN_H = 700
-WIN_W = 700
-
-class Game:
+class Game_Window(object):
         def __init__(self):
                 pygame.init()
-                self.screen = pygame.display.set_mode((700,700),0,32)
-                self.font = pygame.font.SysFont('freesansbold.ttf',40)
-                #self.display.fill((0,0,0))
-                self.clock = pygame.time.Clock()
-                
-        def end(self):
-                running = True
-                time = 0 # we will need this if the game freezes up
-                while running:
-                        time = time + self.clock.tick()
 
-                        #we need the quit event from pygame
+                self.screen = pygame.display.set_mode((700,700),0,32)
+                self.clock = pygame.time.Clock()
+                self.player = player.Player(700,700)
+                self.Food = food.Food()
+                self.Girl = girl.girl()
+                
+                self.font = pygame.font.SysFont('freesansbold.ttf',40)
+
+        def game_over(self):
+                running = True
+                time = 0
+                while running :
+                        time += self.clock.tick()
                         for event in pygame.event.get():
-                                
                                 if event.type == pygame.QUIT:
-                                        sys.exit()
-                                elif event.type == pygame.KEYDOWN and time > 1500:  #timed with the keypress...dont know what is going on
+                                        exit()
+                                if event.type == pygame.KEYDOWN and time > 1500:
                                         running = False
-                        self.screen.fill((255,130,120))
+                        self.screen.fill((255,255,255))
+                        text = self.font.render('GAME OVER ',True,(255,0,0))
+                        self.screen.blit(text,(200-text.get_width()/2,200-text.get_height()))
+                        t2 = 'Points for Hearts Broken: ' + str(self.player.point)
+                        text2 = self.font.render(t2,True,(255,0,0))
+                        self.screen.blit(text2,(200-text2.get_width()/2,200+text2.get_height()))
                         
-        
+                        pygame.display.update()
+                self.player.is_dead = False
+                self.clock.tick()
+                self.player.restart()
+                self.Food.restart()
+                self.Girl.restart()
+                
+
+        def run(self):
+                #the music to play during gameplay
+                pygame.mixer.music.load('bgmusic.mp3')
+                pygame.mixer.music.play()
+                while True :
+                        for event in pygame.event.get():
+                                if event.type == pygame.QUIT:
+                                        exit()
+                        self.screen.fill((0,0,0))
+
+                        dt = self.clock.tick()
+                        self.player.update(dt,self.screen)
+                        self.Food.spawn(dt,self.screen,self.player)
+                        self.Girl.spawn(dt,self.screen,self.player)
+                        
+
+                        if self.player.is_dead :
+                                self.game_over()
+
+                        point = self.font.render(str(self.player.point),True,(0,0,0))
+                        self.screen.blit(point,(0,0))
+                        pygame.display.update()
+
+
 if __name__ == '__main__':
-    newgame = Game()
+        app = Game_Window()
+        app.run()

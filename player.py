@@ -58,6 +58,13 @@ class Player(object) :
 	def increase_length(self,value,point):
 		self.length += value
 		self.point += point
+		
+	def decrease_length(self,value):
+                if(self.length > 3):
+                        self.length -= value
+                if(len(self.followers)) > 3:
+                        self.followers.pop(len(self.followers) -1)
+                        self.followers.pop(len(self.followers) - 1)
 
 	def update_position(self,dt):
 		self.time += dt

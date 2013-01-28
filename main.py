@@ -7,12 +7,13 @@ import player
 import food
 import girl
 import enemy
-import os
+import os,sys
 import time
 
 class Game_Window(object):
         def __init__(self):
                 pygame.init()
+                pygame.mixer.init()
                 self.screen = pygame.display.set_mode((700,700),0,32)
                 self.clock = pygame.time.Clock()
                 self.player = player.Player(700,700)
@@ -21,23 +22,31 @@ class Game_Window(object):
                 self.Enemy = enemy.enemy()                
                 self.font = pygame.font.SysFont('freesansbold.ttf',40)
                 pygame.display.set_caption('Cupid Shuffle')
+                self.go = pygame.mixer.Sound(os.path.join(os.getcwd(),'gameover.aiff'))
 
         def game_over(self):
+                # play the game over sound
+                
+                
+                self.go.play()
+                
                 running = True
                 gtime = 0
                 while running :
                         gtime += self.clock.tick()
                         for event in pygame.event.get():
                                 if event.type == pygame.QUIT:
-                                        exit()
+                                        pygame.quit()
+                                        sys.exit()
                                 if event.type == pygame.KEYDOWN and gtime > 1500:
                                         running = False
-                        self.screen.fill((255,255,255))
-                        text = self.font.render('GAME OVER ',True,(255,0,0))
-                        self.screen.blit(text,(200-text.get_width()/2,200-text.get_height()))
+                        self.screen.fill((50,140,210))
+                        isurf = pygame.image.load(os.path.join(os.getcwd(), 'gameover.png'))
+                        irect = isurf.get_rect(center=(350,350))
+                        self.screen.blit(isurf,irect)
                         t2 = 'Hearts Broken: ' + str(self.player.point)
                         text2 = self.font.render(t2,True,(255,0,0))
-                        self.screen.blit(text2,(200-text2.get_width()/2,200+text2.get_height()))
+                        self.screen.blit(text2,(250,50))
                         
                         pygame.display.update()
                 self.player.is_dead = False
@@ -46,15 +55,21 @@ class Game_Window(object):
                 self.Food.restart()
                 self.Girl.restart()
                 self.Enemy.restart()
+                #stop the music for a little
+               
 
         def run(self):
-                #the music to play during gameplay
                 pygame.mixer.music.load('bgmusic.mp3')
-                pygame.mixer.music.play()
+                while True:
+                        pygame.mixer.music.play(-1, 0.0)
+                        self.runGame()
+                        pygame.mixer.music.stop()
+                        self.game_over()
                 
-                
-                self.startTime = time.time()
-                while True :
+        def runGame(self):
+                self.go.stop()
+                self.startTime = time.time()                
+                while True:     
                         for event in pygame.event.get():
                                 if event.type == pygame.QUIT:
                                         exit()
@@ -86,8 +101,8 @@ class Game_Window(object):
                                 self.Enemy.despawnTick = 120;
 
                         if self.player.is_dead :
-                                pygame.mixer.music.stop()
-                                self.game_over()
+                                return False
+                                
 
                         point = self.font.render("Hearts Broken %s " % (str(self.player.point)),True,(250,250,250))
                         self.screen.blit(point,(0,0))

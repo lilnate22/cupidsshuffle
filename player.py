@@ -1,7 +1,7 @@
 import pygame
 
 class Player_part(object):
-	def __init__(self,pos,color = (0,255,0)):
+	def __init__(self,pos,color = (10,255,25)):
 		self.m_x = pos[0]
 		self.m_y = pos[1]
 		self.x = self.m_x * 10
@@ -28,7 +28,7 @@ class Player(object) :
 		self.h_y = 0
 
 		self.head_color = (0,0,255)
-		self.head = Snake_part((self.x,self.y),self.head_color)
+		self.head = Player_part((self.x,self.y),self.head_color)
 		self.point = 0
 		self.is_dead = False
 
@@ -75,7 +75,7 @@ class Player(object) :
 			self.h_x = +1
 			self.h_y = 0
 		if self.time >= self.time_tick :
-			self.followers.insert(0,Snake_part((self.x,self.y)))
+			self.followers.insert(0,Player_part((self.x,self.y)))
 			self.x += self.h_x
 			self.y += self.h_y
 			self.head.x,self.head.y = self.x*10,self.y*10

@@ -28,7 +28,7 @@ class girl(object):
 		while running:
 			x,y = random.randint(1,69),random.randint(1,69)
 			running = False
-			for t in boy.tail :
+			for t in boy.followers :
 				if t.m_x == x and t.m_y == y :
 					running = True
 			if x == boy.x and y == boy.y :

@@ -52,7 +52,7 @@ class Player(object) :
 		for t in self.followers :
 			if t.m_x == self.x and t.m_y == self.y :
 				self.is_dead = True
-                if self.x < 0 or self.x > 40 or self.y < 0 or self.y > 40 :
+                if self.x < 0 or self.x > 69 or self.y < 0 or self.y > 69 :
                         self.is_dead = True
 
 	def increase_lenght(self,value,point):

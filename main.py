@@ -8,11 +8,11 @@ import food
 import girl
 import enemy
 import os
+import time
 
 class Game_Window(object):
         def __init__(self):
                 pygame.init()
-
                 self.screen = pygame.display.set_mode((700,700),0,32)
                 self.clock = pygame.time.Clock()
                 self.player = player.Player(700,700)
@@ -24,13 +24,13 @@ class Game_Window(object):
 
         def game_over(self):
                 running = True
-                time = 0
+                gtime = 0
                 while running :
-                        time += self.clock.tick()
+                        gtime += self.clock.tick()
                         for event in pygame.event.get():
                                 if event.type == pygame.QUIT:
                                         exit()
-                                if event.type == pygame.KEYDOWN and time > 1500:
+                                if event.type == pygame.KEYDOWN and gtime > 1500:
                                         running = False
                         self.screen.fill((255,255,255))
                         text = self.font.render('GAME OVER ',True,(255,0,0))
@@ -51,6 +51,9 @@ class Game_Window(object):
                 #the music to play during gameplay
                 pygame.mixer.music.load('bgmusic.mp3')
                 pygame.mixer.music.play()
+                
+                
+                self.startTime = time.time()
                 while True :
                         for event in pygame.event.get():
                                 if event.type == pygame.QUIT:
@@ -59,9 +62,25 @@ class Game_Window(object):
 
                         dt = self.clock.tick()
                         self.player.update(dt,self.screen)
-                        self.Food.spawn(dt,self.screen,self.player)
+                        
                         self.Girl.spawn(dt,self.screen,self.player)
-                        self.Enemy.spawn(dt,self.screen,self.player)
+
+                        #we want to spawn enemies and food after X seconds
+                        timeDiff =  int(time.time()- self.startTime)
+                        
+                        if timeDiff > 10:
+                                self.Enemy.spawn(dt,self.screen,self.player)
+                                self.Food.spawn(dt,self.screen,self.player)
+
+                        #when the game has progressed far enough, then the enemy despawn will be spread out much more
+                        if(timeDiff) > 30:
+                                self.Enemy.despawnTick = 30;
+                        if timeDiff > 60:
+                                self.Enemy.despawnTick = 45;
+                        if timeDiff > 120:
+                                self.Enemy.despawnTick = 60;
+                        if timeDiff > 240:
+                                self.Enemy.despawnTick = 120;
 
                         if self.player.is_dead :
                                 pygame.mixer.music.stop()
@@ -69,6 +88,8 @@ class Game_Window(object):
 
                         point = self.font.render("Hearts Broken %s " % (str(self.player.point)),True,(250,250,250))
                         self.screen.blit(point,(0,0))
+                        ctime = self.font.render("Time: %s" %(str(timeDiff)),True,(250,250,250))
+                        self.screen.blit(ctime,(0,30))
                         pygame.display.update()
 
 

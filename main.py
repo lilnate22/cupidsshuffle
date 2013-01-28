@@ -32,6 +32,7 @@ class Game:
                                 elif event.type == pygame.KEYDOWN and time > 1500:  #timed with the keypress...dont know what is going on
                                         running = False
                         self.screen.fill((255,130,120))
+                        
         
 if __name__ == '__main__':
     newgame = Game()

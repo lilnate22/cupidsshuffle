@@ -52,6 +52,6 @@ class girl(object):
 
 		for f_piece in self.girls :
 			if f_piece.m_x == boy.x and f_piece.m_y == boy.y :
-				boy.increase_lenght(1,5) # we kissed a girl, make her "chase" us
+				boy.increase_length(1,5) # we kissed a girl, make her "chase" us
 				self.girls.remove(f_piece)
 			f_piece.blit(screen)

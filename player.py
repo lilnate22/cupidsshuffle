@@ -17,7 +17,7 @@ class Player(object) :
 		self.x = 38
 		self.y = 0
 
-		self.lenght = 10
+		self.length = 10
 
 		self.followers = []
 		self.time_tick = 40
@@ -36,7 +36,7 @@ class Player(object) :
 		self.x = 38
 		self.y = 0
 		self.is_dead = False
-		self.lenght = 10
+		self.length = 10
 		self.followers = []
 		self.speed = 1
 		self.time = 0
@@ -55,8 +55,8 @@ class Player(object) :
                 if self.x < 0 or self.x > 69 or self.y < 0 or self.y > 69 :
                         self.is_dead = True
 
-	def increase_lenght(self,value,point):
-		self.lenght += value
+	def increase_length(self,value,point):
+		self.length += value
 		self.point += point
 
 	def update_position(self,dt):
@@ -74,12 +74,14 @@ class Player(object) :
 		elif key_pressed[pygame.K_RIGHT] and self.h_x != -1:
 			self.h_x = +1
 			self.h_y = 0
+		elif key_pressed[pygame.K_a]:
+			print "length: %s followers:%s" %(str(self.length),str(len(self.followers)))
 		if self.time >= self.time_tick :
 			self.followers.insert(0,Player_part((self.x,self.y)))
 			self.x += self.h_x
 			self.y += self.h_y
 			self.head.x,self.head.y = self.x*10,self.y*10
-			if len(self.followers) > self.lenght :
+			if len(self.followers) > self.length :
 				self.followers.pop(len(self.followers) -1)
 			self.time = 0
 
